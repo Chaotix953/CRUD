@@ -2,21 +2,20 @@ import React, { useState, Fragment } from 'react'
 import AddUserForm from './forms/AddUserForm'
 import EditUserForm from './forms/EditUserForm'
 import UserTable from './tables/UserTable'
+import SearchBar from './search/searchBar'
 
 const App = () => {
-	// Data
+
 	const usersData = [
 		{ id: 1, name: 'Richy', username: 'Chaotix953' }
 	]
 
 	const initialFormState = { id: null, name: '', username: '' }
 
-	// Setting state
 	const [users, setUsers] = useState(usersData)
 	const [currentUser, setCurrentUser] = useState(initialFormState)
 	const [editing, setEditing] = useState(false)
 
-	// CRUD operations
 	const addUser = user => {
 		user.id = users.length + 1
 		setUsers([...users, user])
@@ -65,6 +64,10 @@ const App = () => {
 				<div className="flex-large">
 					<h2>View users</h2>
 					<UserTable users={users} editRow={editRow} deleteUser={deleteUser} />
+				</div>
+				<div className="flex-large">
+					<h2>Search User</h2>
+					<SearchBar usersData={users} />
 				</div>
 			</div>
 		</div>
