@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-const EditUserForm = props => {
+const EditUserForm = (props) => {
 	const [user, setUser] = useState(props.currentUser)
 
 	useEffect(

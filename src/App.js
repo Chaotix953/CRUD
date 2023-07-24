@@ -2,13 +2,10 @@ import React, { useState, Fragment } from 'react'
 import AddUserForm from './forms/AddUserForm'
 import EditUserForm from './forms/EditUserForm'
 import UserTable from './tables/UserTable'
-import SearchBar from './search/searchBar'
 
 const App = () => {
 
-	const usersData = [
-		{ id: 1, name: 'Richy', username: 'Chaotix953' }
-	]
+	const usersData = [{ id: 1, name: 'Richy', username: 'Chaotix953' }, { id: 2, name: 'Ilyes', username: 'cheesecake' }, { id: 3, name: 'STeven', username: 'steven95300' }]
 
 	const initialFormState = { id: null, name: '', username: '' }
 
@@ -16,15 +13,15 @@ const App = () => {
 	const [currentUser, setCurrentUser] = useState(initialFormState)
 	const [editing, setEditing] = useState(false)
 
+	const [searchQuery, setSearchQuery] = useState('');
+
+	const handleInputChange = (event) => {
+		setSearchQuery(event.target.value);
+	};
+
 	const addUser = user => {
 		user.id = users.length + 1
 		setUsers([...users, user])
-	}
-
-	const deleteUser = id => {
-		setEditing(false)
-
-		setUsers(users.filter(user => user.id !== id))
 	}
 
 	const updateUser = (id, updatedUser) => {
@@ -33,11 +30,19 @@ const App = () => {
 		setUsers(users.map(user => (user.id === id ? updatedUser : user)))
 	}
 
+	const deleteUser = id => {
+		setEditing(false)
+
+		setUsers(users.filter(user => user.id !== id))
+	}
+
 	const editRow = user => {
 		setEditing(true)
 
 		setCurrentUser({ id: user.id, name: user.name, username: user.username })
 	}
+
+	const filteredUsers = users.filter((user) => user.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
 	return (
 		<div className="container">
@@ -63,11 +68,15 @@ const App = () => {
 				</div>
 				<div className="flex-large">
 					<h2>View users</h2>
-					<UserTable users={users} editRow={editRow} deleteUser={deleteUser} />
-				</div>
-				<div className="flex-large">
-					<h2>Search User</h2>
-					<SearchBar usersData={users} />
+					<div>
+						<input
+							type="text"
+							placeholder="Rechercher un utilisateur par son nom"
+							value={searchQuery}
+							onChange={handleInputChange}
+						/>
+					</div>
+					<UserTable users={filteredUsers} editRow={editRow} deleteUser={deleteUser} />
 				</div>
 			</div>
 		</div>
